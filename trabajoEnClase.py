@@ -26,7 +26,7 @@ def kruskal(vertices, aristas):
     padre = []
     rango = []
 
-    for nodo in range(vertices):
+    for nodo in range(vertices + 1):  # Incrementamos en 1 el tamaño de la lista padre
         padre.append(nodo)
         rango.append(0)
 
@@ -52,24 +52,20 @@ def kruskal(vertices, aristas):
 
 
 
-def construir_grafo(aristas):
-    grafo = {}
-    for u, v, peso in aristas:
-        if u not in grafo:
-            grafo[u] = []
-        if v not in grafo:
-            grafo[v] = []
-        grafo[u].append((v, peso))
-        grafo[v].append((u, peso))  # Añadir esta línea si el grafo es no dirigido
-    return grafo
-
 def bfs(grafo, inicio, nodos_a_visitar):
     visitados = set()
     cola = [inicio]
     visitados.add(inicio)
     while cola:
         nodo = cola.pop(0)
-        for vecino, _ in grafo.get(nodo, []):
+        for arista in grafo:
+            u, v, _ = arista
+            if u == nodo:
+                vecino = v
+            elif v == nodo:
+                vecino = u
+            else:
+                continue
             if vecino not in visitados:
                 cola.append(vecino)
                 visitados.add(vecino)
@@ -78,17 +74,15 @@ def bfs(grafo, inicio, nodos_a_visitar):
 
 
 
-
 def aereopuertos(destinos, cost, lista_aristas):
     lista=[]
-    for i in range(destinos):
+    for i in range(1,destinos+1):
         lista.append(i)
 
     desconectados=bfs(lista_aristas, lista_aristas[0][0], lista)
     costo=0
     num=0
     for location in desconectados:
-        lista_aristas.pop(location)
         costo+=cost
         num+=1
     total=destinos-len(desconectados)
