@@ -23,17 +23,13 @@ def kruskal(vertices, aristas):
 
     aristas = sorted(aristas, key=lambda item: item[2])
 
-    padre = []
-    rango = []
-
-    for nodo in range(vertices + 1):  # Incrementamos en 1 el tamaño de la lista padre
-        padre.append(nodo)
-        rango.append(0)
+    padre = list(range(vertices + 1))
+    rango = [0] * (vertices + 1)
 
     e = 0
     i = 0
 
-    while e < vertices - 1:
+    while e < vertices - 1 and i < len(aristas):  # Corregimos aquí
         u, v, w = aristas[i]
         i = i + 1
         x = encontrar(padre, u)
@@ -44,11 +40,10 @@ def kruskal(vertices, aristas):
             resultado.append((u, v, w))
             union(padre, rango, x, y)
 
-    suma=0
+    suma = 0
     for arista in resultado:
-        suma+=arista[2]
-    return(suma)
-
+        suma += arista[2]
+    return suma
 
 
 
@@ -86,7 +81,7 @@ def aereopuertos(destinos, cost, lista_aristas):
         costo+=cost
         num+=1
     total=destinos-len(desconectados)
-    costo+=kruskal(total, lista_aristas)+cost
+    costo+=kruskal(len(lista), lista_aristas)+cost
 
     return costo, num
 
